@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Wedding of Abby & Iam</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Great+Vibes&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #FAF6EE;
+      --ivory: #FDFBF7;
+      --gold: #C5A059;
+      --gold-light: #E2C999;
+      --gold-dark: #8E6F34;
+      --sage: #8A9A86;
+      --rose: #C98293;
+      --rose-dark: #9E5668;
+      --navy: #1A2E40;
+      --navy-light: #2A435C;
+      --text-dark: #2A241F;
+      --text-mid: #5E5349;
+      --text-light: #948A7E;
+    }
+
+    body {
+      background: #EAE3D2; /* Soft atmospheric outer background for desktop view */
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 10px;
+    }
+
+    .rsvp-wrap {
+      background: var(--cream);
+      background-image: radial-gradient(var(--ivory) 1px, transparent 0), radial-gradient(var(--ivory) 1px, transparent 0);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px; /* Subtle high-end paper texture */
+      width: 100%;
+      max-width: 480px;
+      min-height: 85vh;
+      font-family: 'EB Garamond', serif;
+      color: var(--text-dark);
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      box-shadow: 0 20px 40px rgba(42, 36, 31, 0.15), 0 2px 10px rgba(42, 36, 31, 0.05);
+    }
+
+    /* Beautiful Regency Corner Border Frame */
+    .border-frame {
+      position: absolute;
+      inset: 16px;
+      pointer-events: none;
+      z-index: 10;
+      border: 1px solid var(--gold-light);
+    }
+
+    .border-frame::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 0.5px solid var(--gold);
+      opacity: 0.6;
+    }
+
+    /* Intricate Ornate Corner Accents */
+    .corner-flourish {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border: 1.5px solid var(--gold);
+      z-index: 11;
+    }
+    .tl { top: 12px; left: 12px; border-right: none; border-bottom: none; border-top-left-radius: 4px; }
+    .tr { top: 12px; right: 12px; border-left: none; border-bottom: none; border-top-right-radius: 4px; }
+    .bl { bottom: 12px; left: 12px; border-right: none; border-top: none; border-bottom-left-radius: 4px; }
+    .br { bottom: 12px; right: 12px; border-left: none; border-top: none; border-bottom-right-radius: 4px; }
+
+    .hero {
+      text-align: center;
+      padding: 3.5rem 2.5rem 1.5rem;
+      position: relative;
+    }
+
+    .crest {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 1.2rem;
+    }
+
+    .crest-line {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .crest-diamond {
+      font-size: 11px;
+      color: var(--gold);
+      transform: scale(1.2);
+    }
+
+    .season-badge {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.38em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .title-script {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.4rem;
+      color: var(--navy);
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+      text-shadow: 0.5px 0.5px 0px rgba(255,255,255,0.8);
+    }
+
+    .title-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.22em;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .couple-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.8rem;
+      color: var(--rose-dark);
+      margin: 0.2rem 0;
+      line-height: 1.2;
+    }
+
+    .ampersand {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 2.2rem;
+      color: var(--gold);
+      font-weight: 300;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      margin: 1.2rem 0;
+    }
+
+    .divider-line {
+      width: 45px;
+      height: 0.5px;
+      background: var(--gold);
+      opacity: 0.5;
+    }
+
+    .divider-ornament {
+      font-size: 11px;
+      color: var(--gold-dark);
+      letter-spacing: 2px;
+    }
+
+    .event-details {
+      background: var(--ivory);
+      border: 0.5px solid var(--gold-light);
+      box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.05);
+      border-radius: 3px;
+      padding: 1.4rem 1.5rem;
+      margin: 0 2rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .event-details::before {
+      content: '❦';
+      position: absolute;
+      color: var(--gold);
+      font-size: 14px;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--cream);
+      padding: 0 10px;
+    }
+
+    .detail-date {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+    }
+
+    .detail-venue {
+      font-style: italic;
+      color: var(--text-dark);
+      font-size: 1rem;
+      font-family: 'EB Garamond', serif;
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-time {
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* Google Maps Styling Container */
+    .map-container {
+      margin: 0 2rem 1.5rem;
+      border: 1px solid var(--gold-light);
+      border-radius: 3px;
+      overflow: hidden;
+      height: 180px;
+      box-shadow: 0 4px 10px rgba(42, 36, 31, 0.05);
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      filter: grayscale(15%) sepia(10%); /* Subtle antique touch to match the aesthetic */
+    }
+
+    .form-section {
+      padding: 0 2.2rem 2.5rem;
+      position: relative;
+      z-index: 15;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-header-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.2rem;
+      color: var(--navy);
+    }
+
+    .form-header-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.82rem;
+      color: var(--gold-dark);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+
+    .field-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .field-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--ivory);
+      border: 1px solid var(--gold-light);
+      border-radius: 2px;
+      font-family: 'EB Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .field-input:focus {
+      border-color: var(--rose);
+      background: white;
+      box-shadow: 0 0 8px rgba(201, 130, 147, 0.2);
+    }
+
+    .field-input::placeholder {
+      color: var(--text-light);
+      font-style: italic;
+      opacity: 0.8;
+    }
+
+    .attendance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .attendance-card {
+      border: 1px solid var(--gold-light);
+      border-radius: 3px;
+      padding: 1.1rem 0.5rem;
+      text-align: center;
+      cursor: pointer;
+      background: var(--ivory);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+    }
+
+    .attendance-card:hover {
+      border-color: var(--rose);
+      background: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(142, 111, 52, 0.08);
+    }
+
+    .attendance-card.selected {
+      border-color: var(--gold-dark);
+      background: #FFFDF9;
+      box-shadow: inset 0 0 0 1px var(--gold-dark), 0 4px 12px rgba(142, 111, 52, 0.12);
+    }
+
+    .attendance-card input[type=radio] {
+      position: absolute;
+      opacity: 0;
+      width: 0; height: 0;
+    }
+
+    .attendance-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: 0.02em;
+    }
+
+    .attendance-sub {
+      font-size: 0.8rem;
+      color: var(--text-mid);
+      font-style: italic;
+      margin-top: 0.25rem;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--navy);
+      border: 1px solid var(--navy);
+      border-radius: 2px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.8rem;
+      box-shadow: 0 4px 12px rgba(26, 46, 64, 0.15);
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: var(--navy-light);
+      color: white;
+      border-color: var(--navy-light);
+      box-shadow: 0 6px 16px rgba(26, 46, 64, 0.25);
+    }
+
+    .submit-btn:disabled {
+      background: var(--text-light);
+      border-color: var(--text-light);
+      color: var(--cream);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    .success-panel {
+      display: none;
+      text-align: center;
+      padding: 5rem 2rem;
+      animation: fadeIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .success-crest {
+      font-size: 2.8rem;
+      margin-bottom: 1.2rem;
+      color: var(--gold);
+    }
+
+    .success-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      color: var(--navy);
+      margin-bottom: 0.8rem;
+    }
+
+    .success-text {
+      font-style: italic;
+      color: var(--text-dark);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .floral-top {
+      text-align: center;
+      font-size: 1rem;
+      color: var(--sage);
+      opacity: 0.6;
+      letter-spacing: 0.6em;
+      padding: 0.5rem 0 1.5rem;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      font-style: italic;
+      padding: 0.5rem 2rem 2.5rem;
+      line-height: 1.7;
+    }
+
+    .decorative-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--gold);
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      margin: 0.8rem 0;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="rsvp-wrap">
+  <!-- Framing Outlines -->
+  <div class="border-frame"></div>
+  <div class="corner-flourish tl"></div>
+  <div class="corner-flourish tr"></div>
+  <div class="corner-flourish bl"></div>
+  <div class="corner-flourish br"></div>
+
+  <div id="rsvp-form-view">
+    <div class="hero">
+      <div class="season-badge">The Wedding of the Season</div>
+      <div class="crest">
+        <div class="crest-line"></div>
+        <div class="crest-diamond">❦</div>
+        <div class="crest-line" style="background: linear-gradient(to left, transparent, var(--gold), transparent);"></div>
+      </div>
+      <div class="title-script">You Are Cordially Invited</div>
+      <div class="title-sub">to celebrate the union of</div>
+      <div class="couple-names">Abby</div>
+      <div class="ampersand">&</div>
+      <div class="couple-names">Iam</div>
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-ornament">⚜</div>
+        <div class="divider-line"></div>
+      </div>
+    </div>
+
+    <!-- Event Info Panel -->
+    <div class="event-details">
+      <div class="detail-date">Saturday, January 9, 2027</div>
+      <div class="detail-venue">Casa Batik, Gapan City</div>
+      <div class="detail-time">4:00 in the Afternoon</div>
+    </div>
+
+    <!-- Embedded Google Maps Layout for Casa Batik -->
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3848.6359229798636!2d120.93603051084864!3d15.287637859825573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397214aac4e79b3%3A0x89c4dd062bd543af!2sCasa%20Batik!5e0!3m2!1sen!2sph!4v1782591142897!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+
+    <div class="floral-top">❀ &nbsp; ❦ &nbsp; ❀</div>
+
+    <div class="form-section">
+      <div class="form-header">
+        <div class="form-header-title">Kindly Reply</div>
+        <div class="form-header-sub">RSVP before 15th of November</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="guest-name">Your Full Name</label>
+        <input class="field-input" type="text" id="guest-name" placeholder="As it would appear on a calling card…">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Shall You Attend?</label>
+        <div class="attendance-grid">
+          <label class="attendance-card" id="card-yes" onclick="selectAttendance('yes')">
+            <input type="radio" name="attendance" value="yes">
+            <div class="attendance-label">Joyfully Accepts</div>
+            <div class="attendance-sub">with great pleasure</div>
+          </label>
+          <label class="attendance-card" id="card-no" onclick="selectAttendance('no')">
+            <input type="radio" name="attendance" value="no">
+            <div class="attendance-label">Regretfully Declines</div>
+            <div class="attendance-sub">with sincere apologies</div>
+          </label>
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="submitRsvp()">
+        Dispatch My Reply
+      </button>
+    </div>
+
+    <div class="decorative-row">— ❧ —</div>
+
+    <div class="footer-note">
+      As reported by Lady Whistledown's Society Papers,<br>
+      this union is the most anticipated match of the season.
+    </div>
+  </div>
+
+  <div class="success-panel" id="success-view">
+    <div class="success-crest">❦</div>
+    <div class="success-title">How Delightful!</div>
+    <div class="divider" style="justify-content:center; margin: 0.75rem 0;">
+      <div class="divider-line"></div>
+      <div class="divider-ornament" style="color:var(--gold);">⚜</div>
+      <div class="divider-line"></div>
+    </div>
+    <p class="success-text" id="success-message">
+      Your reply has been most graciously received and duly noted in the household registry. We look forward to your distinguished company.
+    </p>
+    <div class="decorative-row" style="margin-top:2rem;">✦ &nbsp; ✦ &nbsp; ✦</div>
+    <button class="submit-btn" style="width:auto; padding: 0.7rem 2rem; margin-top:1.5rem;" onclick="resetForm()">
+      Return to Card
+    </button>
+  </div>
+</div>
+
+<script>
+// ⚠️ PASTE YOUR COPIED GOOGLE WEB APP LINK ENDING IN /exec BELOW
+const DEPLOYED_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWQXRS3bIxl0q5_JdMHJS0n492CqBLtMDsIGLcHoxDMl5PDYg7-jZxfqLRtpnJa-ikmw/exec";
+
+let attendanceChoice = null;
+
+function selectAttendance(val) {
+  attendanceChoice = val;
+  document.getElementById('card-yes').classList.remove('selected');
+  document.getElementById('card-no').classList.remove('selected');
+  document.getElementById('card-' + val).classList.add('selected');
+  
+  const details = document.getElementById('attendance-details'); 
+  if (details) {
+    details.style.display = val === 'yes' ? 'block' : 'none';
+  }
+}
+
+function submitRsvp() {
+  const name = document.getElementById('guest-name').value.trim();
+  if (!name) { alert('We appreciate you providing your name.'); return; }
+  if (!attendanceChoice) { alert('Kindly indicate whether you shall attend.'); return; }
+
+  const submitBtn = document.querySelector('.submit-btn');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = "Sending via Carriage...";
+
+  const rsvpData = {
+    name: name,
+    attendance: attendanceChoice === 'yes' ? 'Joyfully Accepts' : 'Regretfully Declines'
+  };
+
+  fetch(DEPLOYED_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rsvpData)
+  })
+  .then(() => {
+    showSuccessUI(name);
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Apologies, your dispatch failed. Please check your connection.');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = "Dispatch My Reply";
+  });
+}
+
+function showSuccessUI(name) {
+  const formView = document.getElementById('rsvp-form-view');
+  const successView = document.getElementById('success-view');
+  const msg = document.getElementById('success-message');
+
+  if (attendanceChoice === 'yes') {
+    msg.textContent = `Dear ${name}, your joyful acceptance has been received with great pleasure. The household eagerly anticipates your presence at the celebration.`;
+  } else {
+    msg.textContent = `Dear ${name}, your regrets are received with understanding. You shall be dearly missed, and we hope to see you soon in society.`;
+  }
+
+  formView.style.display = 'none';
+  successView.style.display = 'block';
+  successView.style.animation = 'fadeIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)';
+}
+
+function resetForm() {
+  document.getElementById('rsvp-form-view').style.display = 'block';
+  document.getElementById('success-view').style.display = 'none';
+  document.getElementById('guest-name').value = '';
+  attendanceChoice = null;
+  ['yes','no'].forEach(v => {
+    const card = document.getElementById('card-' + v);
+    if (card) card.classList.remove('selected');
+  });
+  
+  const submitBtn = document.querySelector('.submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = "Dispatch My Reply";
+  }
+}
+</script>
+
+</body>
+</html>
