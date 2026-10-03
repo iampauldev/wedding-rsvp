@@ -64,6 +64,53 @@
       backdrop-filter: blur(1.5px);
     }
 
+    /* Floating Music Player Widget */
+    .music-player-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background: rgba(253, 251, 247, 0.9);
+      border: 1px solid var(--gold);
+      border-radius: 50px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(42, 36, 31, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .music-player-widget:hover {
+      background: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .music-icon {
+      font-size: 16px;
+      color: var(--gold-dark);
+      animation: spinIcon 4s linear infinite;
+    }
+
+    .music-icon.paused {
+      animation-play-state: paused;
+    }
+
+    @keyframes spinIcon {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .music-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--navy);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
     /* Responsive Regency Corner Border Frame */
     .border-frame {
       position: absolute;
@@ -131,12 +178,6 @@
       background: linear-gradient(to right, transparent, var(--gold), transparent);
     }
 
-    .crest-diamond {
-      font-size: 11px;
-      color: var(--gold);
-      transform: scale(1.2);
-    }
-
     .season-badge {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(9px, 2.5vw, 11px);
@@ -154,8 +195,6 @@
       line-height: 1.2;
       margin-bottom: 0.4rem;
       text-shadow: 0.5px 0.5px 1px rgba(255,255,255,0.9);
-      word-wrap: break-word;
-      overflow-wrap: break-word;
     }
 
     .title-sub {
@@ -173,14 +212,20 @@
       color: var(--gold);
       margin: 0.2rem 0;
       line-height: 1.2;
-      word-wrap: break-word;
+    }
+
+    .ampersand {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      color: var(--gold);
+      font-weight: 300;
     }
 
     .hashtag-title {
       padding: clamp(1rem, 3vw, 1.4rem) clamp(0.8rem, 3vw, 1.5rem);
       margin: 0 clamp(1rem, 4vw, 2rem) 1rem;
       text-align: center;
-      position: relative;
     }
 
     .couple-hashtag {
@@ -190,15 +235,6 @@
       font-weight: 500;
       color: var(--text-mid);
       letter-spacing: 0.05em;
-      margin-bottom: 0.35rem;
-    }
-
-    .ampersand {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: clamp(1.6rem, 5vw, 2.2rem);
-      color: var(--gold);
-      font-weight: 300;
     }
 
     .divider {
@@ -228,18 +264,6 @@
       padding: clamp(1rem, 3vw, 1.4rem) clamp(0.8rem, 3vw, 1.5rem);
       margin: 0 clamp(1rem, 4vw, 2rem) 1rem;
       text-align: center;
-      position: relative;
-    }
-
-    .event-details::before {
-      position: absolute;
-      color: var(--gold);
-      font-size: 14px;
-      top: -11px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(253, 251, 247, 0.9);
-      padding: 0 10px;
     }
 
     .detail-date {
@@ -349,10 +373,6 @@
       margin-bottom: 0.9rem;
     }
 
-    .itinerary-item:last-child {
-      margin-bottom: 0;
-    }
-
     .itinerary-item::before {
       content: '⚜';
       color: var(--gold);
@@ -380,32 +400,6 @@
       color: var(--text-dark);
     }
 
-    .qr-container {
-      margin: 0 clamp(1rem, 4vw, 2rem) 1.5rem;
-      border: 1px solid var(--gold-light);
-      border-radius: 3px;
-      padding: 1.2rem;
-      background: rgba(253, 251, 247, 0.78);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      box-shadow: 0 4px 10px rgba(42, 36, 31, 0.05);
-    }
-
-    .qr-image {
-      width: clamp(100px, 30vw, 130px);
-      height: clamp(100px, 30vw, 130px);
-      border: 1px solid var(--gold-light);
-      border-radius: 6px;
-      padding: 6px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      background: var(--ivory);
-    }
-
     .qr-label {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(0.75rem, 2.2vw, 0.82rem);
@@ -417,11 +411,21 @@
       padding: 6px;
     }
 
+    .qr-image {
+      width: clamp(100px, 30vw, 130px);
+      height: clamp(100px, 30vw, 130px);
+      border: 1px solid var(--gold-light);
+      border-radius: 6px;
+      padding: 6px;
+      display: block;
+      margin: 0 auto 1.5rem;
+      background: var(--ivory);
+    }
+
     .dress-code {
       text-align: center;
       margin: 0 clamp(1rem, 4vw, 2rem) 1.5rem;
       padding: 1.2rem 0.5rem 0.5rem;
-      
     }
 
     .dress-code-title {
@@ -457,7 +461,6 @@
       border-radius: 50%;
       border: 1px solid rgba(197, 160, 89, 0.4);
       box-shadow: 0 2px 6px rgba(42, 36, 31, 0.08);
-      position: relative;
     }
     .swatch.sage { background: var(--sage); }
     .swatch.pink { background: var(--pink); }
@@ -466,7 +469,6 @@
     .swatch.purple { background: var(--purple); }
     .swatch.yellow { background: var(--yellow); }
 
-    /* Dress Code Image Container */
     .dress-code-img-container {
       width: 100%;
       margin-top: 0.8rem;
@@ -475,7 +477,6 @@
       overflow: hidden;
       background: rgba(253, 251, 247, 0.85);
       box-shadow: 0 4px 12px rgba(42, 36, 31, 0.08);
-      position: relative;
     }
 
     .dress-code-guide-img {
@@ -547,12 +548,6 @@
       box-shadow: 0 0 8px rgba(201, 130, 147, 0.2);
     }
 
-    .field-input::placeholder {
-      color: var(--text-light);
-      font-style: italic;
-      opacity: 0.8;
-    }
-
     .attendance-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -577,13 +572,6 @@
       position: relative;
     }
 
-    .attendance-card:hover {
-      border-color: var(--rose);
-      background: white;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(142, 111, 52, 0.08);
-    }
-
     .attendance-card.selected {
       border-color: var(--gold-dark);
       background: #FFFDF9;
@@ -597,16 +585,13 @@
     }
 
     .attendance-label {
-      font-style: italic; 
       font-family: 'EB Garamond', serif;
       font-size: clamp(0.9rem, 2.8vw, 1.05rem);
       font-weight: 600;
       color: var(--gold-dark);
-      letter-spacing: 0.02em;
     }
 
     .attendance-sub {
-      font-style: italic;
       font-family: 'EB Garamond', serif;
       font-size: clamp(0.72rem, 2vw, 0.8rem);
       color: var(--text-mid);
@@ -632,62 +617,30 @@
       box-shadow: 0 4px 12px rgba(26, 46, 64, 0.15);
     }
 
-    .submit-btn:hover:not(:disabled) {
-      background: var(--navy-light);
-      color: white;
-      border-color: var(--navy-light);
-      box-shadow: 0 6px 16px rgba(26, 46, 64, 0.25);
-    }
-
-    .submit-btn:disabled {
-      background: var(--text-light);
-      border-color: var(--text-light);
-      color: var(--cream);
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .submit-btn:active {
-      transform: scale(0.99);
-    }
-
     .success-panel {
       display: none;
       text-align: center;
       padding: 4rem 1.5rem;
-      animation: fadeIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .wax-seal {
       width: clamp(65px, 18vw, 80px);
       height: clamp(65px, 18vw, 80px);
       background: var(--rose-dark);
-      background-image: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, transparent 60%);
       border-radius: 54% 46% 52% 48% / 47% 53% 48% 52%;
       margin: 0 auto 1.5rem;
-      position: relative;
-      box-shadow: inset 0 -4px 8px rgba(0,0,0,0.3), inset 0 4px 8px rgba(255,255,255,0.2), 3px 6px 15px rgba(42, 36, 31, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
       border: 1px solid rgba(0,0,0,0.1);
-    }
-
-    .wax-seal::before {
-      content: '';
-      position: absolute;
-      inset: 6px;
-      border: 1.5px double rgba(255,255,255,0.18);
-      border-radius: 50%;
+      box-shadow: 3px 6px 15px rgba(42, 36, 31, 0.35);
     }
 
     .wax-monogram {
       font-family: 'Great Vibes', cursive;
       color: var(--gold-light);
       font-size: clamp(1.7rem, 5vw, 2.1rem);
-      text-shadow: -1px -1px 1px rgba(0,0,0,0.4), 1px 1px 1px rgba(255,255,255,0.2);
       transform: rotate(-6deg);
-      user-select: none;
     }
 
     .success-title {
@@ -704,11 +657,6 @@
       line-height: 1.8;
       max-width: 340px;
       margin: 0 auto;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(14px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .floral-top {
@@ -742,7 +690,20 @@
     }
   </style>
 </head>
+
 <body>
+
+<!-- Background Music Audio Element -->
+<audio id="bg-music" loop preload="auto">
+  <source src="Goodness_of_God_wedding.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
+</audio>
+
+<!-- Floating Music Player Widget Button -->
+<div class="music-player-widget" id="music-toggle-btn" onclick="toggleMusic()" title="Play/Pause Music">
+  <div class="music-icon paused" id="music-icon">♫</div>
+  <div class="music-label" id="music-label">Music: Off</div>
+</div>
 
 <div class="rsvp-wrap">
   <!-- Canvas overlay for gentle falling spring petals/flowers -->
@@ -765,7 +726,6 @@
       <div class="season-badge">The Wedding of the Season</div>
       <div class="crest">
         <div class="crest-line"></div>
-        <div class="crest-line" style="background: linear-gradient(to left, transparent, var(--gold), transparent);"></div>
       </div>
       <div class="title-script">You Are Cordially Invited</div>
       <div class="title-sub">to celebrate the union of</div>
@@ -830,10 +790,8 @@
     </div>
 
     <!-- Location QR Code -->
-    <!--<div class="qr-container">-->
-      <div class="qr-label">Scan for Venue Location</div>
-      <img src="https://quickchart.io/qr?text=https%3A%2F%2Fmaps.google.com%2F%3Fq%3DCasa%2BBatik%2C%2BGapan%2BCity&dotStyle=rounded&finderStyle=rounded&dark=1A2E40&light=0000&size=150" alt="Scan for Location Map" class="qr-image">
-    <!--</div>-->
+    <div class="qr-label">Scan for Venue Location</div>
+    <img src="https://quickchart.io/qr?text=https%3A%2F%2Fmaps.google.com%2F%3Fq%3DCasa%2BBatik%2C%2BGapan%2BCity&dotStyle=rounded&finderStyle=rounded&dark=1A2E40&light=0000&size=150" alt="Scan for Location Map" class="qr-image">
 
     <!-- Attire Guide -->
     <div class="dress-code">
@@ -850,7 +808,6 @@
         <div class="swatch yellow" title="Yellow"></div>
       </div>
 
-      <!-- Dress Code Image Added Below Swatches -->
       <div class="dress-code-img-container">
         <img src="Dress_code.jpg" alt="Dress Code Guide" class="dress-code-guide-img">
       </div>
@@ -922,6 +879,53 @@
 const DEPLOYED_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWQXRS3bIxl0q5_JdMHJS0n492CqBLtMDsIGLcHoxDMl5PDYg7-jZxfqLRtpnJa-ikmw/exec";
 
 let attendanceChoice = null;
+
+// Background Music Controller Logic
+const bgMusic = document.getElementById('bg-music');
+const musicToggleBtn = document.getElementById('music-toggle-btn');
+const musicIcon = document.getElementById('music-icon');
+const musicLabel = document.getElementById('music-label');
+let isMusicPlaying = false;
+
+function toggleMusic() {
+  if (isMusicPlaying) {
+    bgMusic.pause();
+    isMusicPlaying = false;
+    musicIcon.classList.add('paused');
+    musicLabel.textContent = "Music: Off";
+  } else {
+    bgMusic.play().then(() => {
+      isMusicPlaying = true;
+      musicIcon.classList.remove('paused');
+      musicLabel.textContent = "Music: Playing";
+    }).catch(e => {
+      console.log("Audio playback prevented:", e);
+    });
+  }
+}
+
+// Attempt to autoplay immediately, and fallback to first user interaction if blocked by browser policy
+window.addEventListener('DOMContentLoaded', () => {
+  bgMusic.volume = 0.5; // Set background volume to 50%
+  bgMusic.play().then(() => {
+    isMusicPlaying = true;
+    musicIcon.classList.remove('paused');
+    musicLabel.textContent = "Music: Playing";
+  }).catch(() => {
+    // Autoplay blocked: play on first user touch/click anywhere on the window
+    const startAudioOnInteraction = () => {
+      bgMusic.play().then(() => {
+        isMusicPlaying = true;
+        musicIcon.classList.remove('paused');
+        musicLabel.textContent = "Music: Playing";
+        window.removeEventListener('click', startAudioOnInteraction);
+        window.removeEventListener('touchstart', startAudioOnInteraction);
+      }).catch(err => console.log(err));
+    };
+    window.addEventListener('click', startAudioOnInteraction);
+    window.addEventListener('touchstart', startAudioOnInteraction);
+  });
+});
 
 // Countdown Timer Logic
 const targetDate = new Date("January 9, 2027 16:00:00").getTime();
@@ -1051,17 +1055,13 @@ function resetForm() {
   ];
 
   let isImgLoaded = false;
-  flowerImg.onload = () => {
-    isImgLoaded = true;
-  };
+  flowerImg.onload = () => { isImgLoaded = true; };
 
   const flowerCount = 30;
   const flowers = [];
 
   class Flower {
-    constructor() {
-      this.reset(true);
-    }
+    constructor() { this.reset(true); }
 
     reset(initial = false) {
       this.x = Math.random() * canvas.width;
@@ -1091,7 +1091,6 @@ function resetForm() {
 
     draw() {
       if (!isImgLoaded) return;
-
       const crop = flowerCrops[this.typeIndex];
       const sx = crop.x * flowerImg.naturalWidth;
       const sy = crop.y * flowerImg.naturalHeight;
@@ -1102,13 +1101,7 @@ function resetForm() {
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angle);
       ctx.globalAlpha = this.opacity;
-
-      ctx.drawImage(
-        flowerImg,
-        sx, sy, sw, sh,
-        -this.size / 2, -this.size / 2, this.size, this.size
-      );
-
+      ctx.drawImage(flowerImg, sx, sy, sw, sh, -this.size / 2, -this.size / 2, this.size, this.size);
       ctx.restore();
     }
   }
