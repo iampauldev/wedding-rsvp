@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Wedding of Abby & Iam</title>
+  <title>The Wedding of Iam & Abby</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Great+Vibes&family=Alex+Brush&display=swap');
 
@@ -20,11 +20,11 @@
       --rose-dark: #9E5668;
       --navy: #1A2E40;
       --navy-light: #2A435C;
-      --pink: #FFC0CB;
+      --pink: #E75480;
       --light-blue: #ADD8E6;
       --orange: #FF991C;
-      --purple: #800080;
-      --yellow: #FFEF00;
+      --purple: #C3B1E1;
+      --yellow: #FFFD37;
       --text-dark: #2A241F;
       --text-mid: #5E5349;
       --text-light: #948A7E;
@@ -37,19 +37,202 @@
       justify-content: center;
       align-items: center;
       padding: 20px 10px;
+      overflow-x: hidden;
     }
 
-    /* Canvas Container for Falling Spring Flowers */
-    #flower-canvas {
+    /* Envelope Interactive Overlay Screen */
+    .envelope-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: #E8DFD1 url('bridgerton-inspired-background.jpg') center center / cover no-repeat fixed;
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
+      perspective: 1200px;
+    }
+
+    .envelope-overlay.opened {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: clamp(300px, 90vw, 460px);
+      height: clamp(220px, 60vw, 320px);
+      background: #E8DFD1 url('bridgerton-inspired-background.jpg') center center / cover no-repeat;
+      border-radius: 8px;
+      box-shadow: 0 25px 50px rgba(42, 36, 31, 0.4), 0 5px 15px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transform-style: preserve-3d;
+      border: 1px solid var(--gold-light);
+      transition: transform 1.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 1.4s ease;
+    }
+
+    .envelope-wrapper.open {
+      transform: translateY(35px) scale(1.02);
+      box-shadow: 0 35px 60px rgba(42, 36, 31, 0.5), 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    /* Letter inside the Envelope that slides up */
+    .envelope-letter {
+      position: absolute;
+      bottom: 10px;
+      left: 5%;
+      width: 90%;
+      height: 85%;
+      background: #E8DFD1 url('bridgerton-inspired-background.jpg') center center / cover no-repeat;
+      border: 1px solid var(--gold-light);
+      border-radius: 4px;
+      z-index: 2;
+      transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.6s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .envelope-letter-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: var(--navy);
+      text-align: center;
+    }
+
+    .envelope-wrapper.open .envelope-letter {
+      transform: translateY(-70px);
+      z-index: 3;
+    }
+
+    /* Envelope Pocket Flaps */
+    .envelope-pocket {
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .envelope-flap-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60%;
+      background: linear-gradient(135deg, rgba(249, 244, 234, 0.92), rgba(253, 251, 247, 0.92));
+      clip-path: polygon(0% 100%, 50% 30%, 100% 100%);
+      border-top: 1px solid rgba(197, 160, 89, 0.3);
+    }
+
+    .envelope-flap-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(243, 236, 224, 0.92), rgba(250, 246, 238, 0.92));
+      clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+    }
+
+    .envelope-flap-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(225deg, rgba(243, 236, 224, 0.92), rgba(250, 246, 238, 0.92));
+      clip-path: polygon(100% 0%, 0% 50%, 100% 100%);
+    }
+
+    /* Opening Top Flap Animation */
+    .envelope-flap-top {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 20;
+      height: 58%;
+      background: linear-gradient(180deg, rgba(253, 251, 247, 0.98), rgba(244, 236, 224, 0.98));
+      clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+      transform-origin: top center;
+      transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 5;
+      border-bottom: 1px solid var(--gold-light);
+      backface-visibility: hidden;
     }
 
+    .envelope-wrapper.open .envelope-flap-top {
+      transform: rotateX(-180deg);
+      z-index: 1;
+    }
+
+    /* Monogram Wax Seal */
+    .wax-seal-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%);
+      width: clamp(75px, 20vw, 95px);
+      height: clamp(75px, 20vw, 95px);
+      background: #E8DFD1 url('wax-seal-letter.png') center center / cover no-repeat fixed;
+      border-radius: 53% 47% 52% 48% / 47% 53% 48% 52%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(42, 36, 31, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3), inset 0 -3px 6px rgba(0, 0, 0, 0.3);
+      z-index: 6;
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .wax-seal-button:hover {
+      transform: translate(-50%, -40%) scale(1.08);
+    }
+
+    .wax-seal-img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .envelope-wrapper.open .wax-seal-button {
+      opacity: 0;
+      transform: translate(-50%, -40%) scale(0.4) rotate(-15deg);
+      pointer-events: none;
+    }
+
+    .envelope-hint {
+      position: absolute;
+      bottom: -45px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.2em;
+      color: var(--navy);
+      text-transform: uppercase;
+      font-weight: 600;
+      animation: pulseHint 2s infinite;
+      transition: opacity 0.5s ease;
+    }
+
+    .envelope-wrapper.open .envelope-hint {
+      opacity: 0;
+    }
+
+    @keyframes pulseHint {
+      0%, 100% { opacity: 0.6; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-3px); }
+    }
+
+    /* RSVP Main Container Sliding Reveal */
     .rsvp-wrap {
       background: linear-gradient(rgba(253, 251, 247, 0.65), rgba(253, 251, 247, 0.75)), url('bridgerton-inspired-background.jpg') center bottom / cover no-repeat;
       width: 100%;
@@ -62,6 +245,25 @@
       border-radius: 6px;
       box-shadow: 0 20px 50px rgba(42, 36, 31, 0.35), 0 2px 12px rgba(42, 36, 31, 0.15);
       backdrop-filter: blur(1.5px);
+      transform: translateY(60px) scale(0.92);
+      opacity: 0;
+      transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+    }
+
+    .rsvp-wrap.revealed {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    /* Canvas Container for Falling Flowers */
+    #flower-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 20;
     }
 
     /* Floating Music Player Widget */
@@ -136,17 +338,12 @@
       border: 1.5px solid var(--gold);
       z-index: 11;
     }
-    .tl { top: clamp(6px, 2.5vw, 12px); left: clamp(6px, 2.5vw, 12px); border-right: none; border-bottom: none; border-top-left-radius: 4px; }
-    .tr { top: clamp(6px, 2.5vw, 12px); right: clamp(6px, 2.5vw, 12px); border-left: none; border-bottom: none; border-top-right-radius: 4px; }
-    .bl { bottom: clamp(6px, 2.5vw, 12px); left: clamp(6px, 2.5vw, 12px); border-right: none; top: auto; border-bottom-left-radius: 4px; }
-    .br { bottom: clamp(6px, 2.5vw, 12px); right: clamp(6px, 2.5vw, 12px); border-left: none; top: auto; border-bottom-right-radius: 4px; }
 
     .hero {
       text-align: center;
       position: relative;
     }
 
-    /* Monogram Image Container */
     .monogram-image-container {
       width: 100%;
       max-width: clamp(200px, 60vw, 280px);
@@ -337,69 +534,6 @@
       margin-top: 0.25rem;
     }
 
-    .itinerary-section {
-      margin: 0 clamp(1rem, 4vw, 2rem) 1.5rem;
-      padding: 0 0.5rem;
-    }
-
-    .itinerary-title {
-      text-align: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(0.78rem, 2.2vw, 0.85rem);
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold-dark);
-      margin-bottom: 1rem;
-    }
-
-    .itinerary-timeline {
-      position: relative;
-      padding-left: 1.5rem;
-    }
-
-    .itinerary-timeline::before {
-      content: '';
-      position: absolute;
-      left: 4px;
-      top: 6px;
-      bottom: 6px;
-      width: 0.5px;
-      background: var(--gold-light);
-    }
-
-    .itinerary-item {
-      position: relative;
-      margin-bottom: 0.9rem;
-    }
-
-    .itinerary-item::before {
-      content: '⚜';
-      color: var(--gold);
-      position: absolute;
-      left: -19px;
-      top: -1px;
-      font-size: 9px;
-      background: rgba(253, 251, 247, 0.78);
-      padding: 2px 0;
-    }
-
-    .itinerary-time {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 600;
-      font-size: clamp(0.8rem, 2.5vw, 0.85rem);
-      letter-spacing: 0.05em;
-      color: var(--navy);
-      display: inline-block;
-      margin-right: 0.5rem;
-    }
-
-    .itinerary-desc {
-      font-size: clamp(0.85rem, 2.5vw, 0.92rem);
-      font-style: italic;
-      color: var(--text-dark);
-    }
-
     .qr-label {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(0.75rem, 2.2vw, 0.82rem);
@@ -462,7 +596,6 @@
       border: 1px solid rgba(197, 160, 89, 0.4);
       box-shadow: 0 2px 6px rgba(42, 36, 31, 0.08);
     }
-    .swatch.sage { background: var(--sage); }
     .swatch.pink { background: var(--pink); }
     .swatch.lightblue { background: var(--light-blue); }
     .swatch.orange { background: var(--orange); }
@@ -505,6 +638,16 @@
     }
 
     .form-header-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.75rem, 2vw, 0.82rem);
+      color: var(--gold-dark);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+
+      .form-note-sub {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(0.75rem, 2vw, 0.82rem);
       color: var(--gold-dark);
@@ -618,29 +761,11 @@
     }
 
     .success-panel {
+      background: #E8DFD1 url('bridgerton-inspired-background.jpg') center center / cover no-repeat fixed;
       display: none;
       text-align: center;
       padding: 4rem 1.5rem;
-    }
-
-    .wax-seal {
-      width: clamp(65px, 18vw, 80px);
-      height: clamp(65px, 18vw, 80px);
-      background: var(--rose-dark);
-      border-radius: 54% 46% 52% 48% / 47% 53% 48% 52%;
-      margin: 0 auto 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(0,0,0,0.1);
-      box-shadow: 3px 6px 15px rgba(42, 36, 31, 0.35);
-    }
-
-    .wax-monogram {
-      font-family: 'Great Vibes', cursive;
-      color: var(--gold-light);
-      font-size: clamp(1.7rem, 5vw, 2.1rem);
-      transform: rotate(-6deg);
+      animation: fadeIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .success-title {
@@ -671,7 +796,7 @@
     .footer-note {
       text-align: center;
       font-size: clamp(0.75rem, 2vw, 0.82rem);
-      color: var(--text-light);
+      color: var(--gold-dark);
       font-style: italic;
       padding: 0.5rem 1rem 2.5rem;
       line-height: 1.7;
@@ -693,9 +818,28 @@
 
 <body>
 
+<!-- Interactive Envelope Screen Overlay -->
+<div class="envelope-overlay" id="envelope-overlay">
+  <div class="envelope-wrapper" id="envelope-wrapper" onclick="openEnvelope()">
+    <div class="envelope-flap-top"></div>
+    <div class="envelope-letter">
+      <div class="envelope-letter-text">Iam & Abby</div>
+    </div>
+    <div class="envelope-pocket">
+      <div class="envelope-flap-left"></div>
+      <div class="envelope-flap-right"></div>
+      <div class="envelope-flap-bottom"></div>
+    </div>
+    <div class="wax-seal-button">
+      <img src="wax-seal-letter.png" alt="Wax Seal Monogram" class="wax-seal-img">
+    </div>
+    <div class="envelope-hint">Tap Wax Seal to Open</div>
+  </div>
+</div>
+
 <!-- Background Music Audio Element -->
 <audio id="bg-music" loop preload="auto">
-  <source src="Goodness_of_God_wedding.mp3" type="audio/mp3">
+  <source src="Bridgerton_Theme.mp3" type="audio/mp3">
   Your browser does not support the audio element.
 </audio>
 
@@ -705,11 +849,9 @@
   <div class="music-label" id="music-label">Music: Off</div>
 </div>
 
-<div class="rsvp-wrap">
-  <!-- Canvas overlay for gentle falling spring petals/flowers -->
+<div class="rsvp-wrap" id="rsvp-wrap">
   <canvas id="flower-canvas"></canvas>
 
-  <!-- Framing Outlines -->
   <div class="border-frame"></div>
   <div class="corner-flourish tl"></div>
   <div class="corner-flourish tr"></div>
@@ -718,9 +860,8 @@
 
   <div id="rsvp-form-view">
     <div class="hero">
-      <!-- Monogram Image Reference -->
       <div class="monogram-image-container">
-        <img src="monogram_v3.png" alt="J & A Monogram Crest" class="monogram-img">
+        <img src="monogram_v4_no_bg.png" alt="J & A Monogram Crest" class="monogram-img">
       </div>
       
       <div class="season-badge">The Wedding of the Season</div>
@@ -729,9 +870,9 @@
       </div>
       <div class="title-script">You Are Cordially Invited</div>
       <div class="title-sub">to celebrate the union of</div>
-      <div class="couple-names">Iam</div>
+      <div class="couple-names">~ Iam ~</div>
       <div class="ampersand">&</div>
-      <div class="couple-names">Abby</div>
+      <div class="couple-names">~ Abby ~</div>
       <div class="divider">
         <div class="divider-line"></div>
         <div class="divider-ornament">⚜</div>
@@ -739,19 +880,16 @@
       </div>
     </div>
 
-    <!--Couple Hashtag-->
     <div class="hashtag-title">
       <div class="couple-hashtag">#IAMtheoneforABBY</div>
     </div>
 
-    <!-- Event Info Panel -->
     <div class="event-details">
       <div class="detail-date">Saturday, January 9, 2027</div>
       <div class="detail-venue">Casa Batik, Gapan City, Nueva Ecija</div>
       <div class="detail-time">4:00 in the Afternoon</div>
     </div>
 
-    <!-- Countdown Timer Panel -->
     <div class="countdown-panel">
       <div class="countdown-title">Days until the festivities commence</div>
       <div class="countdown-container">
@@ -774,33 +912,16 @@
       </div>
     </div>
 
-    <!-- Illustrated Itinerary Timeline -->
-    <div class="itinerary-section">
-      <div class="itinerary-title">The Order of Events</div>
-      <div class="itinerary-timeline">
-        <div class="itinerary-item">
-          <span class="itinerary-time">4:00 PM</span>
-          <span class="itinerary-desc">Wedding Ceremony</span>
-        </div>
-        <div class="itinerary-item">
-          <span class="itinerary-time">5:30 PM</span>
-          <span class="itinerary-desc">The Wedding Banquet (Reception)</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Location QR Code -->
     <div class="qr-label">Scan for Venue Location</div>
     <img src="https://quickchart.io/qr?text=https%3A%2F%2Fmaps.google.com%2F%3Fq%3DCasa%2BBatik%2C%2BGapan%2BCity&dotStyle=rounded&finderStyle=rounded&dark=1A2E40&light=0000&size=150" alt="Scan for Location Map" class="qr-image">
 
-    <!-- Attire Guide -->
     <div class="dress-code">
       <div class="dress-code-title">Attire of the Court</div>
       <div class="dress-code-text">
-        Guests are requested to don their finest formal attire. Bright color palettes, florals, and regal tones are highly encouraged.
+        Guests are kindly requested to dress in their finest formal attire.<br>
+        Vibrant colors, floral prints, and regal hues are warmly encouraged.
       </div>
       <div class="palette-swatches">
-        <div class="swatch sage" title="Sage Floral"></div>
         <div class="swatch pink" title="Standard Pink"></div>
         <div class="swatch lightblue" title="Light Blue"></div>
         <div class="swatch orange" title="Orange"></div>
@@ -809,7 +930,7 @@
       </div>
 
       <div class="dress-code-img-container">
-        <img src="Dress_code.jpg" alt="Dress Code Guide" class="dress-code-guide-img">
+        <img src="Dress_code_v2.png" alt="Dress Code Guide" class="dress-code-guide-img">
       </div>
     </div>
 
@@ -817,17 +938,18 @@
 
     <div class="form-section">
       <div class="form-header">
-        <div class="form-header-title">Kindly Reply</div>
-        <div class="form-header-sub">RSVP before 15th of November</div>
+        <div class="form-header-title">Kindly RSVP</div>
+        <div class="form-header-sub">RSVP before 15th of November</div><br>
+        <div class="form-note-sub">We kindly request no additional guests, as seating is reserved for invited attendees only.</div>
       </div>
 
       <div class="field-group">
-        <label class="field-label" for="guest-name">Your Full Name</label>
-        <input class="field-input" type="text" id="guest-name" placeholder="As it would appear on a calling card…">
+        <label class="field-label" for="guest-name">Your Full Name:</label>
+        <input class="field-input" type="text" id="guest-name" placeholder="As it would appear on our list...">
       </div>
 
       <div class="field-group">
-        <label class="field-label">Shall You Attend?</label>
+        <label class="field-label">We hope you'll be able to join us!</label>
         <div class="attendance-grid">
           <label class="attendance-card" id="card-yes" onclick="selectAttendance('yes')">
             <input type="radio" name="attendance" value="yes">
@@ -851,15 +973,15 @@
 
     <div class="footer-note">
       As reported by Lady Whistledown's Society Papers,<br>
-      this union is the most anticipated match of the season.
+      this union is the most anticipated match of the season.<br>
+      Created & Designed by: iam.dev
     </div>
   </div>
 
   <div class="success-panel" id="success-view">
-    <div class="wax-seal">
-      <div class="wax-monogram">I&A</div>
+    <div class="monogram-image-container">
+      <img src="monogram_v4_no_bg.png" alt="J & A Monogram Crest" class="monogram-img">
     </div>
-    <div class="success-title">How Delightful!</div>
     <div class="divider" style="justify-content:center; margin: 0.75rem 0;">
       <div class="divider-line"></div>
       <div class="divider-ornament" style="color:var(--gold);">⚜</div>
@@ -879,8 +1001,30 @@
 const DEPLOYED_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWQXRS3bIxl0q5_JdMHJS0n492CqBLtMDsIGLcHoxDMl5PDYg7-jZxfqLRtpnJa-ikmw/exec";
 
 let attendanceChoice = null;
+let resizeCanvas = null;
 
-// Background Music Controller Logic
+function openEnvelope() {
+  const envelope = document.getElementById('envelope-wrapper');
+  const overlay = document.getElementById('envelope-overlay');
+  const rsvpWrap = document.getElementById('rsvp-wrap');
+
+  if (envelope.classList.contains('open')) return;
+
+  envelope.classList.add('open');
+
+  if (!isMusicPlaying) {
+    toggleMusic();
+  }
+
+  setTimeout(() => {
+    overlay.classList.add('opened');
+    rsvpWrap.classList.add('revealed');
+    if (typeof resizeCanvas === 'function') {
+      resizeCanvas();
+    }
+  }, 1600);
+}
+
 const bgMusic = document.getElementById('bg-music');
 const musicToggleBtn = document.getElementById('music-toggle-btn');
 const musicIcon = document.getElementById('music-icon');
@@ -904,30 +1048,10 @@ function toggleMusic() {
   }
 }
 
-// Attempt to autoplay immediately, and fallback to first user interaction if blocked by browser policy
 window.addEventListener('DOMContentLoaded', () => {
-  bgMusic.volume = 0.5; // Set background volume to 50%
-  bgMusic.play().then(() => {
-    isMusicPlaying = true;
-    musicIcon.classList.remove('paused');
-    musicLabel.textContent = "Music: Playing";
-  }).catch(() => {
-    // Autoplay blocked: play on first user touch/click anywhere on the window
-    const startAudioOnInteraction = () => {
-      bgMusic.play().then(() => {
-        isMusicPlaying = true;
-        musicIcon.classList.remove('paused');
-        musicLabel.textContent = "Music: Playing";
-        window.removeEventListener('click', startAudioOnInteraction);
-        window.removeEventListener('touchstart', startAudioOnInteraction);
-      }).catch(err => console.log(err));
-    };
-    window.addEventListener('click', startAudioOnInteraction);
-    window.addEventListener('touchstart', startAudioOnInteraction);
-  });
+  bgMusic.volume = 0.5;
 });
 
-// Countdown Timer Logic
 const targetDate = new Date("January 9, 2027 16:00:00").getTime();
 
 function updateCountdown() {
@@ -1008,6 +1132,10 @@ function showSuccessUI(name) {
   formView.style.display = 'none';
   successView.style.display = 'block';
   successView.style.animation = 'fadeIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)';
+
+  if (typeof resizeCanvas === 'function') {
+    resizeCanvas();
+  }
 }
 
 function resetForm() {
@@ -1025,39 +1153,43 @@ function resetForm() {
     submitBtn.disabled = false;
     submitBtn.innerHTML = "Dispatch My Reply";
   }
+
+  if (typeof resizeCanvas === 'function') {
+    resizeCanvas();
+  }
 }
 
-/* Falling Spring Flowers Animation */
+/* Individual Falling Flowers Animation */
 (function initFallingFlowers() {
   const canvas = document.getElementById('flower-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const parent = canvas.parentElement;
 
-  function resizeCanvas() {
+  resizeCanvas = function() {
     canvas.width = parent.clientWidth;
     canvas.height = parent.clientHeight;
-  }
+  };
   
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
   const flowerImg = new Image();
-  flowerImg.src = 'spring_flowers-removebg-preview.png';
+  flowerImg.src = 'falling_flower_2.png';
 
   const flowerCrops = [
-    { x: 0.00, y: 0.00, w: 0.33, h: 0.50 },
-    { x: 0.33, y: 0.00, w: 0.34, h: 0.50 },
-    { x: 0.67, y: 0.00, w: 0.33, h: 0.50 },
-    { x: 0.00, y: 0.50, w: 0.33, h: 0.50 },
-    { x: 0.33, y: 0.50, w: 0.34, h: 0.50 },
-    { x: 0.67, y: 0.50, w: 0.33, h: 0.50 }
+    { x: 0.00, y: 0.00, w: 0.333, h: 0.50 },
+    { x: 0.333, y: 0.00, w: 0.334, h: 0.50 },
+    { x: 0.667, y: 0.00, w: 0.333, h: 0.50 },
+    { x: 0.00, y: 0.50, w: 0.333, h: 0.50 },
+    { x: 0.333, y: 0.50, w: 0.334, h: 0.50 },
+    { x: 0.667, y: 0.50, w: 0.333, h: 0.50 }
   ];
 
   let isImgLoaded = false;
   flowerImg.onload = () => { isImgLoaded = true; };
 
-  const flowerCount = 30;
+  const flowerCount = 28;
   const flowers = [];
 
   class Flower {
@@ -1065,15 +1197,15 @@ function resetForm() {
 
     reset(initial = false) {
       this.x = Math.random() * canvas.width;
-      this.y = initial ? Math.random() * canvas.height : -30;
-      this.size = Math.random() * 14 + 18;
-      this.speedY = Math.random() * 0.8 + 0.4;
-      this.speedX = Math.random() * 0.4 - 0.2;
+      this.y = initial ? Math.random() * canvas.height : -40;
+      this.size = Math.random() * 16 + 22;
+      this.speedY = Math.random() * 0.7 + 0.35;
+      this.speedX = Math.random() * 0.3 - 0.15;
       this.typeIndex = Math.floor(Math.random() * flowerCrops.length);
       this.angle = Math.random() * Math.PI * 2;
-      this.spinSpeed = (Math.random() - 0.5) * 0.018;
+      this.spinSpeed = (Math.random() - 0.5) * 0.015;
       this.opacity = Math.random() * 0.35 + 0.65;
-      this.swayAmplitude = Math.random() * 1.5 + 0.5;
+      this.swayAmplitude = Math.random() * 1.5 + 0.6;
       this.swaySpeed = Math.random() * 0.02 + 0.01;
       this.swayOffset = Math.random() * Math.PI * 2;
     }
@@ -1084,7 +1216,7 @@ function resetForm() {
       this.x += Math.sin(this.swayOffset) * this.swayAmplitude * 0.5 + this.speedX;
       this.angle += this.spinSpeed;
 
-      if (this.y > canvas.height + 30 || this.x < -30 || this.x > canvas.width + 30) {
+      if (this.y > canvas.height + 40 || this.x < -40 || this.x > canvas.width + 40) {
         this.reset(false);
       }
     }
