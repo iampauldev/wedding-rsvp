@@ -80,7 +80,6 @@
       box-shadow: 0 35px 60px rgba(42, 36, 31, 0.5), 0 10px 25px rgba(0,0,0,0.15);
     }
 
-    /* Letter inside the Envelope that slides up */
     .envelope-letter {
       position: absolute;
       bottom: 10px;
@@ -112,7 +111,6 @@
       z-index: 3;
     }
 
-    /* Envelope Pocket Flaps */
     .envelope-pocket {
       position: absolute;
       inset: 0;
@@ -122,38 +120,40 @@
       pointer-events: none;
     }
 
-    .envelope-flap-bottom {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 60%;
-      background: linear-gradient(135deg, rgba(249, 244, 234, 0.95), rgba(253, 251, 247, 0.95));
-      clip-path: polygon(0% 100%, 50% 30%, 100% 100%);
-      border-top: 1px solid rgba(197, 160, 89, 0.3);
-    }
-
     .envelope-flap-left {
       position: absolute;
       top: 0;
       left: 0;
-      width: 55%;
+      width: 52%;
       height: 100%;
-      background: linear-gradient(135deg, rgba(243, 236, 224, 0.95), rgba(250, 246, 238, 0.95));
+      background: linear-gradient(135deg, rgba(243, 236, 224, 0.98), rgba(250, 246, 238, 0.98));
       clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+      z-index: 2;
     }
 
     .envelope-flap-right {
       position: absolute;
       top: 0;
       right: 0;
-      width: 55%;
+      width: 52%;
       height: 100%;
-      background: linear-gradient(225deg, rgba(243, 236, 224, 0.95), rgba(250, 246, 238, 0.95));
+      background: linear-gradient(225deg, rgba(243, 236, 224, 0.98), rgba(250, 246, 238, 0.98));
       clip-path: polygon(100% 0%, 0% 50%, 100% 100%);
+      z-index: 2;
     }
 
-    /* Hardware Accelerated Top Flap Animation */
+    .envelope-flap-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60%;
+      background: linear-gradient(135deg, rgba(249, 244, 234, 0.98), rgba(253, 251, 247, 0.98));
+      clip-path: polygon(0% 100%, 50% 30%, 100% 100%);
+      border-top: 1px solid rgba(197, 160, 89, 0.3);
+      z-index: 3;
+    }
+
     .envelope-flap-top {
       position: absolute;
       top: 0;
@@ -176,7 +176,6 @@
       z-index: 1;
     }
 
-    /* Monogram Wax Seal */
     .wax-seal-button {
       position: absolute;
       top: 50%;
@@ -238,7 +237,7 @@
       50% { opacity: 1; transform: translateY(-3px); }
     }
 
-    /* RSVP Main Container Sliding Reveal */
+    /* RSVP Main Container */
     .rsvp-wrap {
       background: linear-gradient(rgba(253, 251, 247, 0.65), rgba(253, 251, 247, 0.75)), url('bridgerton-inspired-background.jpg') center bottom / cover no-repeat;
       width: 100%;
@@ -261,7 +260,6 @@
       opacity: 1;
     }
 
-    /* Canvas Container for Falling Flowers */
     #flower-canvas {
       position: absolute;
       top: 0;
@@ -272,7 +270,6 @@
       z-index: 20;
     }
 
-    /* Floating Music Player Widget */
     .music-player-widget {
       position: fixed;
       bottom: 20px;
@@ -319,7 +316,6 @@
       font-weight: 600;
     }
 
-    /* Responsive Regency Corner Border Frame */
     .border-frame {
       position: absolute;
       inset: clamp(8px, 3vw, 16px);
@@ -336,7 +332,6 @@
       opacity: 0.6;
     }
 
-    /* Ornate Corner Accents */
     .corner-flourish {
       position: absolute;
       width: clamp(16px, 4vw, 24px);
@@ -665,6 +660,7 @@
 
     .field-group {
       margin-bottom: 1.2rem;
+      position: relative;
     }
 
     .field-label {
@@ -681,7 +677,7 @@
     .field-input {
       width: 100%;
       padding: 0.75rem 1rem;
-      background: rgba(253, 251, 247, 0.88);
+      background: rgba(253, 251, 247, 0.95);
       border: 1px solid var(--gold-light);
       border-radius: 2px;
       font-family: 'EB Garamond', serif;
@@ -695,6 +691,56 @@
       border-color: var(--rose);
       background: white;
       box-shadow: 0 0 8px rgba(201, 130, 147, 0.2);
+    }
+
+    /* Autocomplete Dropdown Styling */
+    .autocomplete-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #FDFBF7;
+      border: 1px solid var(--gold-light);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      box-shadow: 0 10px 20px rgba(42, 36, 31, 0.15);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+    }
+
+    .autocomplete-item {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.9rem, 2.6vw, 1rem);
+      color: var(--text-dark);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .autocomplete-item:last-child {
+      border-bottom: none;
+    }
+
+    .autocomplete-item:hover {
+      background: #FAF6EE;
+      color: var(--gold-dark);
+    }
+
+    .guest-status-msg {
+      font-size: 0.85rem;
+      margin-top: 0.4rem;
+      font-style: italic;
+    }
+
+    .guest-status-msg.success { color: #2e7d32; }
+    .guest-status-msg.error { color: #c62828; }
+
+    .attendance-section {
+      display: none;
+      animation: fadeIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .attendance-grid {
@@ -766,7 +812,6 @@
       box-shadow: 0 4px 12px rgba(26, 46, 64, 0.15);
     }
 
-    /* Fixed transparent panel to prevent bottom color block clipping */
     .success-panel {
       background: transparent;
       display: none;
@@ -821,6 +866,11 @@
       letter-spacing: 0.3em;
       margin: 0.8rem 0;
       opacity: 0.6;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -953,29 +1003,33 @@
       </div>
 
       <div class="field-group">
-        <label class="field-label" for="guest-name">Your Full Name:</label>
-        <input class="field-input" type="text" id="guest-name" placeholder="As it would appear on our list...">
+        <label class="field-label" for="guest-name">Search Your Name:</label>
+        <input class="field-input" type="text" id="guest-name" placeholder="Type your name..." autocomplete="off">
+        <div class="autocomplete-dropdown" id="autocomplete-list"></div>
+        <div class="guest-status-msg" id="guest-status-msg"></div>
       </div>
 
-      <div class="field-group">
-        <label class="field-label">We hope you'll be able to join us!</label>
-        <div class="attendance-grid">
-          <label class="attendance-card" id="card-yes" onclick="selectAttendance('yes')">
-            <input type="radio" name="attendance" value="yes">
-            <div class="attendance-label">Joyfully Accepts</div>
-            <div class="attendance-sub">with great pleasure</div>
-          </label>
-          <label class="attendance-card" id="card-no" onclick="selectAttendance('no')">
-            <input type="radio" name="attendance" value="no">
-            <div class="attendance-label">Regretfully Declines</div>
-            <div class="attendance-sub">with sincere apologies</div>
-          </label>
+      <div class="attendance-section" id="attendance-section">
+        <div class="field-group">
+          <label class="field-label">We hope you'll be able to join us!</label>
+          <div class="attendance-grid">
+            <label class="attendance-card" id="card-yes" onclick="selectAttendance('yes')">
+              <input type="radio" name="attendance" value="yes">
+              <div class="attendance-label">Joyfully Accepts</div>
+              <div class="attendance-sub">with great pleasure</div>
+            </label>
+            <label class="attendance-card" id="card-no" onclick="selectAttendance('no')">
+              <input type="radio" name="attendance" value="no">
+              <div class="attendance-label">Regretfully Declines</div>
+              <div class="attendance-sub">with sincere apologies</div>
+            </label>
+          </div>
         </div>
-      </div>
 
-      <button class="submit-btn" onclick="submitRsvp()">
-        Dispatch My Reply
-      </button>
+        <button class="submit-btn" onclick="submitRsvp()">
+          Dispatch My Reply
+        </button>
+      </div>
     </div>
 
     <div class="decorative-row">— ❧ —</div>
@@ -1007,10 +1061,12 @@
 </div>
 
 <script>
-const DEPLOYED_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWQXRS3bIxl0q5_JdMHJS0n492CqBLtMDsIGLcHoxDMl5PDYg7-jZxfqLRtpnJa-ikmw/exec";
+const DEPLOYED_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxIMUHg61RXly4wHEgZK6djqAOeTKMU_dtNb_xfqsJyzO6W-Ehq7YxTZwqcqGiihOsfw/exec";
 
 let attendanceChoice = null;
 let resizeCanvas = null;
+let isVerifiedGuest = false;
+let searchTimeout = null;
 
 function openEnvelope() {
   const envelope = document.getElementById('envelope-wrapper');
@@ -1059,7 +1115,83 @@ function toggleMusic() {
 
 window.addEventListener('DOMContentLoaded', () => {
   bgMusic.volume = 0.5;
+  document.getElementById('attendance-section').style.display = 'none';
+
+  const nameInput = document.getElementById('guest-name');
+  const dropdown = document.getElementById('autocomplete-list');
+  const statusMsg = document.getElementById('guest-status-msg');
+  const attendanceSec = document.getElementById('attendance-section');
+
+  // Live search input handling
+  nameInput.addEventListener('input', function() {
+    const query = this.value.trim();
+    isVerifiedGuest = false;
+    attendanceSec.style.display = 'none';
+    statusMsg.textContent = '';
+    
+    clearTimeout(searchTimeout);
+
+    if (query.length < 2) {
+      dropdown.style.display = 'none';
+      dropdown.innerHTML = '';
+      return;
+    }
+
+    statusMsg.className = "guest-status-msg";
+    statusMsg.textContent = "Searching guest list...";
+
+    // Debounce calls to Google Apps Script by 300ms
+    searchTimeout = setTimeout(() => {
+      fetch(`${DEPLOYED_SCRIPT_URL}?query=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => {
+          dropdown.innerHTML = '';
+          statusMsg.textContent = '';
+
+          if (data.matches && data.matches.length > 0) {
+            data.matches.forEach(name => {
+              const item = document.createElement('div');
+              item.className = 'autocomplete-item';
+              item.textContent = name;
+              item.onclick = () => selectGuestName(name);
+              dropdown.appendChild(item);
+            });
+            dropdown.style.display = 'block';
+          } else {
+            dropdown.style.display = 'none';
+            statusMsg.className = "guest-status-msg error";
+            statusMsg.textContent = "We could not find your name on the guest list. Please check the spelling.";
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          statusMsg.className = "guest-status-msg error";
+          statusMsg.textContent = "Error searching guest list. Please try again.";
+        });
+    }, 300);
+  });
+
+  // Hide dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (e.target !== nameInput && e.target !== dropdown) {
+      dropdown.style.display = 'none';
+    }
+  });
 });
+
+function selectGuestName(selectedName) {
+  const nameInput = document.getElementById('guest-name');
+  const dropdown = document.getElementById('autocomplete-list');
+  const statusMsg = document.getElementById('guest-status-msg');
+  const attendanceSec = document.getElementById('attendance-section');
+
+  nameInput.value = selectedName;
+  dropdown.style.display = 'none';
+  isVerifiedGuest = true;
+  statusMsg.className = "guest-status-msg success";
+  statusMsg.textContent = `Invitation found for ${selectedName}! Please select your attendance below.`;
+  attendanceSec.style.display = 'block';
+}
 
 const targetDate = new Date("January 9, 2027 16:00:00").getTime();
 
@@ -1096,10 +1228,10 @@ function selectAttendance(val) {
 
 function submitRsvp() {
   const name = document.getElementById('guest-name').value.trim();
-  if (!name) { alert('We appreciate you providing your name.'); return; }
+  if (!name || !isVerifiedGuest) { alert('Please select your name from the search suggestions first.'); return; }
   if (!attendanceChoice) { alert('Kindly indicate whether you shall attend.'); return; }
 
-  const submitBtn = document.querySelector('.submit-btn');
+  const submitBtn = document.querySelector('.attendance-section .submit-btn');
   submitBtn.disabled = true;
   submitBtn.innerHTML = "Sending via Carriage...";
 
@@ -1151,13 +1283,17 @@ function resetForm() {
   document.getElementById('rsvp-form-view').style.display = 'block';
   document.getElementById('success-view').style.display = 'none';
   document.getElementById('guest-name').value = '';
+  document.getElementById('guest-status-msg').textContent = '';
+  document.getElementById('attendance-section').style.display = 'none';
+  isVerifiedGuest = false;
   attendanceChoice = null;
+
   ['yes','no'].forEach(v => {
     const card = document.getElementById('card-' + v);
     if (card) card.classList.remove('selected');
   });
   
-  const submitBtn = document.querySelector('.submit-btn');
+  const submitBtn = document.querySelector('.attendance-section .submit-btn');
   if (submitBtn) {
     submitBtn.disabled = false;
     submitBtn.innerHTML = "Dispatch My Reply";
@@ -1244,7 +1380,6 @@ function resetForm() {
         const sh = crop.h * flowerImg.naturalHeight;
         ctx.drawImage(flowerImg, sx, sy, sw, sh, -this.size / 2, -this.size / 2, this.size, this.size);
       } else {
-        // Procedural Petal Fallback if image fails to load
         ctx.fillStyle = '#C98293';
         for (let i = 0; i < 5; i++) {
           ctx.beginPath();
