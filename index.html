@@ -52,6 +52,7 @@
       align-items: center;
       transition: opacity 1.2s ease, visibility 1.2s ease;
       perspective: 1200px;
+      overflow: hidden;
     }
 
     .envelope-overlay.opened {
@@ -62,8 +63,8 @@
 
     .envelope-wrapper {
       position: relative;
-      width: clamp(300px, 90vw, 460px);
-      height: clamp(220px, 60vw, 320px);
+      width: clamp(280px, 88vw, 460px);
+      height: clamp(200px, 58vw, 320px);
       background: #E8DFD1 url('bridgerton-inspired-background.jpg') center center / cover no-repeat;
       border-radius: 8px;
       box-shadow: 0 25px 50px rgba(42, 36, 31, 0.4), 0 5px 15px rgba(0,0,0,0.1);
@@ -71,6 +72,7 @@
       transform-style: preserve-3d;
       border: 1px solid var(--gold-light);
       transition: transform 1.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 1.4s ease;
+      will-change: transform;
     }
 
     .envelope-wrapper.open {
@@ -95,6 +97,7 @@
       align-items: center;
       justify-content: center;
       padding: 10px;
+      will-change: transform;
     }
 
     .envelope-letter-text {
@@ -125,7 +128,7 @@
       left: 0;
       width: 100%;
       height: 60%;
-      background: linear-gradient(135deg, rgba(249, 244, 234, 0.92), rgba(253, 251, 247, 0.92));
+      background: linear-gradient(135deg, rgba(249, 244, 234, 0.95), rgba(253, 251, 247, 0.95));
       clip-path: polygon(0% 100%, 50% 30%, 100% 100%);
       border-top: 1px solid rgba(197, 160, 89, 0.3);
     }
@@ -136,7 +139,7 @@
       left: 0;
       width: 55%;
       height: 100%;
-      background: linear-gradient(135deg, rgba(243, 236, 224, 0.92), rgba(250, 246, 238, 0.92));
+      background: linear-gradient(135deg, rgba(243, 236, 224, 0.95), rgba(250, 246, 238, 0.95));
       clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
     }
 
@@ -146,11 +149,11 @@
       right: 0;
       width: 55%;
       height: 100%;
-      background: linear-gradient(225deg, rgba(243, 236, 224, 0.92), rgba(250, 246, 238, 0.92));
+      background: linear-gradient(225deg, rgba(243, 236, 224, 0.95), rgba(250, 246, 238, 0.95));
       clip-path: polygon(100% 0%, 0% 50%, 100% 100%);
     }
 
-    /* Opening Top Flap Animation */
+    /* Hardware Accelerated Top Flap Animation */
     .envelope-flap-top {
       position: absolute;
       top: 0;
@@ -164,6 +167,8 @@
       z-index: 5;
       border-bottom: 1px solid var(--gold-light);
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
     }
 
     .envelope-wrapper.open .envelope-flap-top {
@@ -177,9 +182,9 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -40%);
-      width: clamp(75px, 20vw, 95px);
-      height: clamp(75px, 20vw, 95px);
-      background: #E8DFD1 url('wax-seal-letter.png') center center / cover no-repeat fixed;
+      width: clamp(70px, 18vw, 95px);
+      height: clamp(70px, 18vw, 95px);
+      background: #E8DFD1 url('wax-seal-letter.png') center center / cover no-repeat;
       border-radius: 53% 47% 52% 48% / 47% 53% 48% 52%;
       display: flex;
       align-items: center;
@@ -188,6 +193,7 @@
       z-index: 6;
       transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease;
       border: 1px solid rgba(255, 255, 255, 0.2);
+      will-change: transform, opacity;
     }
 
     .wax-seal-button:hover {
@@ -647,7 +653,7 @@
       margin-top: 0.2rem;
     }
 
-      .form-note-sub {
+    .form-note-sub {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(0.75rem, 2vw, 0.82rem);
       color: var(--gold-dark);
@@ -760,12 +766,15 @@
       box-shadow: 0 4px 12px rgba(26, 46, 64, 0.15);
     }
 
+    /* Fixed transparent panel to prevent bottom color block clipping */
     .success-panel {
-      background: #E8DFD1 url('bridgerton-inspired-background.jpg') center center / cover no-repeat fixed;
+      background: transparent;
       display: none;
       text-align: center;
-      padding: 4rem 1.5rem;
+      padding: 4rem 1.5rem 3rem;
       animation: fadeIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      z-index: 15;
     }
 
     .success-title {
@@ -1222,18 +1231,33 @@ function resetForm() {
     }
 
     draw() {
-      if (!isImgLoaded) return;
-      const crop = flowerCrops[this.typeIndex];
-      const sx = crop.x * flowerImg.naturalWidth;
-      const sy = crop.y * flowerImg.naturalHeight;
-      const sw = crop.w * flowerImg.naturalWidth;
-      const sh = crop.h * flowerImg.naturalHeight;
-
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angle);
       ctx.globalAlpha = this.opacity;
-      ctx.drawImage(flowerImg, sx, sy, sw, sh, -this.size / 2, -this.size / 2, this.size, this.size);
+
+      if (isImgLoaded) {
+        const crop = flowerCrops[this.typeIndex];
+        const sx = crop.x * flowerImg.naturalWidth;
+        const sy = crop.y * flowerImg.naturalHeight;
+        const sw = crop.w * flowerImg.naturalWidth;
+        const sh = crop.h * flowerImg.naturalHeight;
+        ctx.drawImage(flowerImg, sx, sy, sw, sh, -this.size / 2, -this.size / 2, this.size, this.size);
+      } else {
+        // Procedural Petal Fallback if image fails to load
+        ctx.fillStyle = '#C98293';
+        for (let i = 0; i < 5; i++) {
+          ctx.beginPath();
+          ctx.ellipse(0, -this.size / 4, this.size / 5, this.size / 2.5, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.rotate((Math.PI * 2) / 5);
+        }
+        ctx.beginPath();
+        ctx.arc(0, 0, this.size / 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#C5A059';
+        ctx.fill();
+      }
+
       ctx.restore();
     }
   }
