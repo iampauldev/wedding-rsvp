@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Wedding of Iam & Abby</title>
   <!-- Favicon / Tab Icon -->
-<link rel="icon" type="image/png" href="wax-seal-letter.png">
+  <link rel="icon" type="image/png" href="wax-seal-letter.png">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Great+Vibes&family=Alex+Brush&display=swap');
 
@@ -1063,7 +1063,7 @@
 </div>
 
 <script>
-const DEPLOYED_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxIMUHg61RXly4wHEgZK6djqAOeTKMU_dtNb_xfqsJyzO6W-Ehq7YxTZwqcqGiihOsfw/exec";
+const DEPLOYED_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxW_9fK66-tbU1vzLKLB7JdPLIqIZ-2Wluo0Mf1AoG82rcBKFIfRDLQ7BQjIItcfp4KEA/exec";
 
 let attendanceChoice = null;
 let resizeCanvas = null;
@@ -1151,12 +1151,18 @@ window.addEventListener('DOMContentLoaded', () => {
           statusMsg.textContent = '';
 
           if (data.matches && data.matches.length > 0) {
-            data.matches.forEach(name => {
-              const item = document.createElement('div');
-              item.className = 'autocomplete-item';
-              item.textContent = name;
-              item.onclick = () => selectGuestName(name);
-              dropdown.appendChild(item);
+            data.matches.forEach(item => {
+              const guestName = typeof item === 'string' ? item : item.name;
+              const alreadyRsvped = typeof item === 'object' ? item.alreadyRsvped : false;
+
+              const div = document.createElement('div');
+              div.className = 'autocomplete-item';
+              div.innerHTML = alreadyRsvped 
+                ? `${guestName} <span style="font-size:0.8em; color:var(--rose-dark); font-style:italic;">(Already RSVPed - Click to update)</span>` 
+                : guestName;
+
+              div.onclick = () => selectGuestName(guestName, alreadyRsvped);
+              dropdown.appendChild(div);
             });
             dropdown.style.display = 'block';
           } else {
@@ -1181,7 +1187,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-function selectGuestName(selectedName) {
+function selectGuestName(selectedName, alreadyRsvped = false) {
   const nameInput = document.getElementById('guest-name');
   const dropdown = document.getElementById('autocomplete-list');
   const statusMsg = document.getElementById('guest-status-msg');
@@ -1191,7 +1197,13 @@ function selectGuestName(selectedName) {
   dropdown.style.display = 'none';
   isVerifiedGuest = true;
   statusMsg.className = "guest-status-msg success";
-  statusMsg.textContent = `Invitation found for ${selectedName}! Please select your attendance below.`;
+
+  if (alreadyRsvped) {
+    statusMsg.textContent = `Welcome back, ${selectedName}! You have already submitted an RSVP, but you can update your response below.`;
+  } else {
+    statusMsg.textContent = `Invitation found for ${selectedName}! Please select your attendance below.`;
+  }
+
   attendanceSec.style.display = 'block';
 }
 
