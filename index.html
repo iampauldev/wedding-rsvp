@@ -559,6 +559,163 @@
       background: var(--ivory);
     }
 
+    /* Pre-Wedding Photo Slideshow Section */
+    .gallery-section {
+      text-align: center;
+      margin: 0 clamp(1rem, 4vw, 2rem) 1.5rem;
+      padding: 1rem 0.5rem;
+      position: relative;
+      z-index: 15;
+    }
+
+    .gallery-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.78rem, 2.2vw, 0.85rem);
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .gallery-sub {
+      font-style: italic;
+      font-size: clamp(0.82rem, 2.5vw, 0.9rem);
+      color: var(--text-mid);
+      margin-bottom: 1rem;
+    }
+
+    .slideshow-container {
+      position: relative;
+      width: 100%;
+      border: 1px solid var(--gold-light);
+      border-radius: 4px;
+      overflow: hidden;
+      background: rgba(253, 251, 247, 0.9);
+      box-shadow: 0 4px 15px rgba(42, 36, 31, 0.1);
+    }
+
+    .slideshow-viewport {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slideshow-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ivory);
+    }
+
+    .slideshow-slide.active {
+      opacity: 1;
+      z-index: 2;
+    }
+
+    .slideshow-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .slideshow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      background: rgba(253, 251, 247, 0.8);
+      border: 1px solid var(--gold);
+      color: var(--navy);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .slideshow-btn:hover {
+      background: var(--ivory);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .slideshow-btn.prev { left: 8px; }
+    .slideshow-btn.next { right: 8px; }
+
+    .slideshow-counter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--gold-dark);
+      margin-top: 0.6rem;
+      font-weight: 600;
+    }
+
+    /* Lightbox Modal */
+    .lightbox-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(26, 46, 64, 0.92);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      padding: 20px;
+    }
+
+    .lightbox-modal.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border: 1px solid var(--gold-light);
+      border-radius: 4px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -35px;
+      right: 0;
+      color: var(--cream);
+      font-size: 24px;
+      cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      transition: color 0.3s ease;
+    }
+
+    .lightbox-close:hover {
+      color: var(--gold-light);
+    }
+
     .dress-code {
       text-align: center;
       margin: 0 clamp(1rem, 4vw, 2rem) 1.5rem;
@@ -910,6 +1067,14 @@
   <div class="music-label" id="music-label">Music: Off</div>
 </div>
 
+<!-- Lightbox Modal for Full View -->
+<div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox()">
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img src="" alt="Pre-Wedding Photo" id="lightbox-img" class="lightbox-img">
+  </div>
+</div>
+
 <div class="rsvp-wrap" id="rsvp-wrap">
   <canvas id="flower-canvas"></canvas>
 
@@ -976,6 +1141,40 @@
     <div class="qr-label">Scan for Venue Location</div>
     <img src="https://quickchart.io/qr?text=https%3A%2F%2Fmaps.google.com%2F%3Fq%3DCasa%2BBatik%2C%2BGapan%2BCity&dotStyle=rounded&finderStyle=rounded&dark=1A2E40&light=0000&size=150" alt="Scan for Location Map" class="qr-image">
 
+    <!-- Pre-Wedding Photo Automatic Slideshow Section -->
+    <div class="gallery-section" id="slideshow-section">
+      <div class="gallery-title">Pre-Wedding Portraits</div>
+      <div class="gallery-sub">A glimpse into our journey together</div>
+      
+      <div class="slideshow-container">
+        <button class="slideshow-btn prev" onclick="manualSlide(-1)" aria-label="Previous Photo">&#10094;</button>
+        <div class="slideshow-viewport" id="slideshow-viewport">
+          <!-- 15 Photo Slides -->
+          <div class="slideshow-slide active"><img src="prenup/pic1.jpg" alt="Pre-Wedding Photo 1" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic2.jpg" alt="Pre-Wedding Photo 2" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic3.jpg" alt="Pre-Wedding Photo 3" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic4.jpg" alt="Pre-Wedding Photo 4" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic5.jpg" alt="Pre-Wedding Photo 5" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic6.jpg" alt="Pre-Wedding Photo 6" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic7.jpg" alt="Pre-Wedding Photo 7" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic8.jpg" alt="Pre-Wedding Photo 8" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic9.jpg" alt="Pre-Wedding Photo 9" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic10.jpg" alt="Pre-Wedding Photo 10" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic11.jpg" alt="Pre-Wedding Photo 11" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic12.jpg" alt="Pre-Wedding Photo 12" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic13.jpg" alt="Pre-Wedding Photo 13" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic14.jpg" alt="Pre-Wedding Photo 14" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic15.jpg" alt="Pre-Wedding Photo 15" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic16.jpg" alt="Pre-Wedding Photo 15" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic17.jpg" alt="Pre-Wedding Photo 15" onclick="openLightbox(this.src)"></div>
+          <div class="slideshow-slide"><img src="prenup/pic18.jpg" alt="Pre-Wedding Photo 15" onclick="openLightbox(this.src)"></div>
+        </div>
+        <button class="slideshow-btn next" onclick="manualSlide(1)" aria-label="Next Photo">&#10095;</button>
+      </div>
+      
+      <div class="slideshow-counter" id="slideshow-counter">Portrait 1 of 18</div>
+    </div>
+
     <div class="dress-code">
       <div class="dress-code-title">Attire of the Court</div>
       <div class="dress-code-text">
@@ -991,7 +1190,7 @@
       </div>
 
       <div class="dress-code-img-container">
-        <img src="Dress_code_v2.png" alt="Dress Code Guide" class="dress-code-guide-img">
+        <img src="Dress_code_v2.jpg" alt="Dress Code Guide" class="dress-code-guide-img">
       </div>
     </div>
 
@@ -1113,6 +1312,60 @@ function toggleMusic() {
       console.log("Audio playback prevented:", e);
     });
   }
+}
+
+/* Pre-Wedding Automatic Slideshow Logic */
+let currentSlideIndex = 0;
+const slides = document.querySelectorAll('.slideshow-slide');
+const counter = document.getElementById('slideshow-counter');
+let slideInterval = null;
+
+function updateSlideView() {
+  slides.forEach((slide, index) => {
+    slide.classList.toggle('active', index === currentSlideIndex);
+  });
+  if (counter) {
+    counter.textContent = `Portrait ${currentSlideIndex + 1} of ${slides.length}`;
+  }
+}
+
+function nextSlide() {
+  currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+  updateSlideView();
+}
+
+function manualSlide(direction) {
+  clearInterval(slideInterval);
+  currentSlideIndex = (currentSlideIndex + direction + slides.length) % slides.length;
+  updateSlideView();
+  startSlideshow(); // Restart timer after manual click
+}
+
+function startSlideshow() {
+  clearInterval(slideInterval);
+  slideInterval = setInterval(nextSlide, 4500); // Changes every 4.5 seconds
+}
+
+// Pause automatic rotation when hovering over slideshow
+const slideshowContainer = document.getElementById('slideshow-section');
+if (slideshowContainer) {
+  slideshowContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+  slideshowContainer.addEventListener('mouseleave', () => startSlideshow());
+}
+
+// Start slideshow on load
+startSlideshow();
+
+/* Lightbox Modal Functions */
+function openLightbox(src) {
+  const modal = document.getElementById('lightbox-modal');
+  const img = document.getElementById('lightbox-img');
+  img.src = src;
+  modal.classList.add('open');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox-modal').classList.remove('open');
 }
 
 window.addEventListener('DOMContentLoaded', () => {
